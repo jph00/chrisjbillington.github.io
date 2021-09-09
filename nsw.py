@@ -26,6 +26,9 @@ munits.registry[datetime] = converter
 
 POP_OF_SYD = 5_312_163
 POP_OF_NSW = 8.166e6
+days_until_freedom = 30
+freedom_impact = 0.5
+max_num_doses = 70
 
 
 NONISOLATING = 'noniso' in sys.argv
@@ -295,6 +298,7 @@ def stochastic_sir(
             # in absolute nubmers so need to be normalised by population to get
             # susceptible fraction
             s = (1 - vax_immune) * (1 - (recovered + infectious) / population_size)
+            if j==days_until_freedom: R0+=freedom_impact
             R_eff = s * R0
             infected_today = np.random.poisson(infectious * R_eff / tau)
             recovered_today = np.random.binomial(infectious, 1 / tau)
@@ -366,7 +370,7 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
         else:
             doses_per_100[i] = doses_per_100[i - 1] + NOV_RATE
 
-    doses_per_100 = np.clip(doses_per_100, 0, 85 * 2)
+    doses_per_100 = np.clip(doses_per_100, 0, max_num_doses * 2)
 
     all_doses_per_100 = np.concatenate([historical_doses_per_100, doses_per_100])
     # The "prepend=0" makes it as if all the doses in the initial day were just
@@ -428,6 +432,7 @@ elif NONISOLATING:
     dates, new = nonisolating_data()
 else:
     dates, new = covidlive_data()
+new = np.maximum(new,0)
 
 START_VAX_PROJECTIONS = 42  # July 22nd, when I started making vaccine projections
 all_dates = dates
