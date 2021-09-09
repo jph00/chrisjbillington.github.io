@@ -27,7 +27,7 @@ munits.registry[datetime] = converter
 POP_OF_SYD = 5_312_163
 POP_OF_NSW = 8.166e6
 days_until_freedom = 30
-freedom_impact = 0.5
+freedom_impact = 0.0
 max_num_doses = 70
 
 
