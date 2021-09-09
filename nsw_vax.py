@@ -66,9 +66,9 @@ OCT = np.datetime64('2021-10-01')
 
 nsw_proj_rate = np.zeros(len(t_projection))
 
-nsw_proj_rate[:] =  1.8 # Oct onward
-nsw_proj_rate[t_projection < OCT] =  1.6 # Sep
-nsw_proj_rate[t_projection < SEP] =  1.4 # Aug
+nsw_proj_rate[:] =  0.85 # Oct onward
+nsw_proj_rate[t_projection < OCT] =  1.25 # Sep
+nsw_proj_rate[t_projection < SEP] =  1.25 # Aug
 # clip to 85% fully vaxed
 initial_coverage =  100 * nsw_doses.sum() / POPS[STATE]
 nsw_proj_rate[initial_coverage + nsw_proj_rate.cumsum() > 2 * 85] = 0
